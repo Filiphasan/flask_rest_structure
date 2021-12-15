@@ -12,3 +12,4 @@ build/
 dist/
 instance/
 .env
+migrations/
