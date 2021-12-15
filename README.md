@@ -6,9 +6,9 @@
 
 ### If you want to use this structure. Pay attention to the items below!
 
-- You need Python3.0 or newer version.
+- You need Python3.0 or newer version.[Download](https://www.python.org/downloads/)
 - You need pip packagemanager for python. If you have python, ypu already have pip.
-- Absolutely you need virtualenv.
+- Absolutely you need virtualenv. [Virtual Env Doc](https://virtualenv.pypa.io/en/latest/)
 
 If you have pip and you want install virtualenv. Just open terminal and work this script "`pip install virtualenv`"
 
