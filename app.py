@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, json, jsonify
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from marshmallow import ValidationError
