@@ -3,6 +3,7 @@ from ma import ma
 from .messages.user import UserMessages
 
 class UserSchema(Schema):
+    id = fields.String()
     first_name = fields.String(required=True, 
         validate=validate.Length(1,30,error=UserMessages.FIRST_NAME_LEN_MSG), 
         error_messages={"required":UserMessages.FIRST_NAME_REQ_MSG})
@@ -24,5 +25,10 @@ class UserSchema(Schema):
 
 class UserGetSchema(Schema):
     class Meta:
-        id = fields.String(),
+        id = fields.String()
+        first_name = fields.String()
+        last_name = fields.String()
+        username = fields.String()
+        email = fields.String()
+        password = fields.String()
 

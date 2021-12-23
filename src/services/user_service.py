@@ -71,9 +71,9 @@ def get_user(type: str, data):
     except Exception as error:
         return server_error_obj, 500
 
-def update_user(user_data:UserSchema):
+def update_user(user_data: UserSchema, id: str):
     try:
-        user = UsersModel.query.get(user_data.id)
+        user = UsersModel.query.get(id)
         if not user:
             return False
         user.first_name = user_data.first_name
