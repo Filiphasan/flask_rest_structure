@@ -27,18 +27,6 @@ class UsersModel(BaseModel, db.Model):
     #     self.email = email
     #     self.password = password_hash
     #     self.email_confirmed = False
-    #     self.status = False
-
-    @property
-    def password(self):
-        raise AttributeError('password: write-only field')
-
-    @password.setter
-    def password(self, password):
-        self.password = flask_bcyrpt.generate_password_hash(password).decode("utf-8")
-    
-    def check_password(self, password: str):
-        return flask_bcyrpt.check_password_hash(self.password, password)
 
     def __repr__(self):
         return "<User '{}'>".format(self.username)

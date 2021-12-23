@@ -24,8 +24,7 @@ def save_new_user(user_data : UserSchema):
                 username = user_data.username,
                 email = user_data.email,
                 password = user_data.password,
-                email_confirmed = False,
-                status = False
+                email_confirmed = False
             )
             db.session.add(new_user)
             db.session.commit()

@@ -3,7 +3,7 @@ from ma import ma
 from .messages.user import UserMessages
 
 class UserSchema(Schema):
-    id = fields.String()
+    id = fields.String(required=False)
     first_name = fields.String(required=True, 
         validate=validate.Length(1,30,error=UserMessages.FIRST_NAME_LEN_MSG), 
         error_messages={"required":UserMessages.FIRST_NAME_REQ_MSG})
