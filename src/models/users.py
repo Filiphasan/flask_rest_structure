@@ -5,7 +5,7 @@ from bcrypt import flask_bcyrpt
 from .base import BaseModel
 
 
-class UsersModel(BaseModel, db.Model):
+class UsersModel(db.Model):
     __tablename__ = "users"
 
     # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -27,9 +27,9 @@ class UsersModel(BaseModel, db.Model):
         self.email = email
         self.password = password_hash
         self.email_confirmed = False
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
-        self.is_deleted = False
+        # self.created_at = datetime.utcnow()
+        # self.updated_at = datetime.utcnow()
+        # self.is_deleted = False
 
     def __repr__(self):
         return "<User '{}'>".format(self.username)

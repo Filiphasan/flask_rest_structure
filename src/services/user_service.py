@@ -14,14 +14,12 @@ users_schema = UserGetSchema(many=True)
 USER_ALREADY_EXIST = "Email already exist!"
 
 def save_new_user(user_data : UserSchema):
+    print(user_data)
     try:
-        print("Tamamam mmmmmmmmmmmmmmmm")
         user = UsersModel.query.filter_by(email=user_data.email).first()
-        print("Tamamam mmmmmmmmmmmmmmmm")
         if user:
             return {'message':USER_ALREADY_EXIST}, 404
         else:
-            print("Tamamam mmmmmmmmmmmmmmmm")
             new_user = UsersModel(
                 id = str(uuid.uuid4()),
                 first_name= user_data.first_name,

@@ -35,12 +35,13 @@ user_ns.route("/<id>")
 user_ns.param('id','User identity UUID')
 class UserResource(Resource):
     @user_ns.doc('Get A User')
+    @user_ns.response(200,"Get Success",model= user)
     @user_ns.marshal_with(user)
     def get(self, id):
         get_user_id(id)
     
     @user_ns.doc("Update A User")
-    @user_ns.marshal_with(user)
+    @user_ns.response(200,"Update Success.",model= user)
     @user_ns.expect(user_update)
     def put(self, id):
         req_json = request.get_json()
@@ -54,7 +55,7 @@ class UserListResource(Resource):
         get_all_users()
     
     @user_ns.doc("Create A User")
-    @user_ns.response(201,"",model= user)
+    @user_ns.response(201,"Add Success.",model= user)
     @user_ns.expect(user_add)
     def post(self):
         req_json = request.get_json()
