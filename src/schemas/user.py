@@ -2,8 +2,7 @@ from marshmallow import Schema, fields, validate
 from ma import ma
 from .messages.user import UserMessages
 
-class UserSchema(ma.Schema):
-    id = fields.String()
+class UserSchema(Schema):
     first_name = fields.String(required=True, 
         validate=validate.Length(1,30,error=UserMessages.FIRST_NAME_LEN_MSG), 
         error_messages={"required":UserMessages.FIRST_NAME_REQ_MSG})
@@ -23,6 +22,7 @@ class UserSchema(ma.Schema):
             validate.Regexp("[A-Za-z0-9@#$%^&+=]{6,30}",error=UserMessages.PASSWORD_FORMAT_MSG)],
         error_messages={"required":UserMessages.PASSWORD_REQ_MSG})
 
-class UserGetSchema(ma.Schema):
+class UserGetSchema(Schema):
     class Meta:
-        fields = {'id', 'first_name', 'last_name', 'username', 'email'}
+        id = fields.String(),
+

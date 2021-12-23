@@ -1,8 +1,9 @@
-from flask import Flask, json, jsonify
+from flask import Flask, Blueprint, jsonify
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from marshmallow import ValidationError
 from werkzeug.exceptions import HTTPException
+from flask_restx import Api
 
 from db import db
 from ma import ma
@@ -10,8 +11,13 @@ from bcrypt import flask_bcyrpt
 import os
 
 from src.models.users import UsersModel
+from src.controllers.user_controller import UserResource, user_ns
 
 app = Flask(__name__)
+# blueprint = Blueprint('api', __name__, url_prefix='/api')
+api = Api(app, doc='/doc', title='Flask Rest Structure')
+
+
 load_dotenv(".env")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI", 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -21,6 +27,11 @@ db.init_app(app)
 ma.init_app(app)
 flask_bcyrpt.init_app(app)
 migrate = Migrate(app, db)
+# app.register_blueprint(blueprint)
+
+api.add_namespace(user_ns)
+
+user_ns.add_resource(UserResource, '/<id>')
 
 
 @app.before_first_request
@@ -40,9 +51,9 @@ def handler_global_error(error):
     return jsonify({"error":"Internal Server Error!"}), code
     
 
-@app.route("/")
-def hello():
-    return "hello"
+# @app.route("/")
+# def hello():
+#     return "hello"
 
 
 if __name__ == "__main__":

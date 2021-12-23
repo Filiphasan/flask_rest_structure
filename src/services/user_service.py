@@ -4,20 +4,11 @@ import datetime
 from db import db
 from flask_restx import fields, Namespace
 from src.models.users import UsersModel
-from schemas.user import UserSchema, UserGetSchema
-from services import server_error_obj, not_found_obj, delete_success_obj
+from src.schemas.user import UserSchema, UserGetSchema
+from src.services import server_error_obj, not_found_obj, delete_success_obj
 
 user_schema = UserGetSchema()
 users_schema = UserGetSchema(many=True)
-
-user_ns = Namespace("user", description= "User operations.")
-user = user_ns.model("User", {
-    'id': fields.String(),
-    'first_name': fields.String(),
-    'last_name': fields.String(),
-    'username': fields.String(),
-    'email': fields.String()
-})
 
 USER_ALREADY_EXIST = "Girilen mail bilgisi sistemde bulunmaktadır!"
 
