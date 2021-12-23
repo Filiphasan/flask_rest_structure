@@ -40,6 +40,7 @@ class UserResource(Resource):
         get_user_id(id)
     
     @user_ns.doc("Update A User")
+    @user_ns.marshal_with(user)
     @user_ns.expect(user_update)
     def put(self, id):
         req_json = request.get_json()
@@ -53,6 +54,7 @@ class UserListResource(Resource):
         get_all_users()
     
     @user_ns.doc("Create A User")
+    @user_ns.response(201,"",model= user)
     @user_ns.expect(user_add)
     def post(self):
         req_json = request.get_json()
