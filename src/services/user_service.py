@@ -14,7 +14,6 @@ users_schema = UserGetSchema(many=True)
 USER_ALREADY_EXIST = "Email already exist!"
 
 def save_new_user(user_data : UserSchema):
-    print(user_data)
     try:
         user = UsersModel.query.filter_by(email=user_data.email).first()
         if user:
