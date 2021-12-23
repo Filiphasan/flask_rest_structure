@@ -18,15 +18,18 @@ class UsersModel(BaseModel, db.Model):
     password = db.Column(db.String(200), nullable=False)
     email_confirmed = db.Column(db.Boolean, default=False, nullable=False)
 
-    # def __init(self, id, first_name, last_name, full_name, username, email, password_hash):
-    #     self.id = id
-    #     self.first_name = first_name
-    #     self.last_name = last_name
-    #     self.full_name = first_name + " " + last_name
-    #     self.username = username
-    #     self.email = email
-    #     self.password = password_hash
-    #     self.email_confirmed = False
+    def __init__(self, id, first_name, last_name, username, email, password_hash):
+        self.id = id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.full_name = first_name + " " + last_name
+        self.username = username
+        self.email = email
+        self.password = password_hash
+        self.email_confirmed = False
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
+        self.is_deleted = False
 
     def __repr__(self):
         return "<User '{}'>".format(self.username)

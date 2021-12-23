@@ -4,33 +4,32 @@ import datetime
 from db import db
 from flask_restx import fields, Namespace
 from src.models.users import UsersModel
-from src.schemas.user import UserSchema, UserGetSchema
+from src.schemas.user_schemas import UserSchema, UserGetSchema
 from src.services import server_error_obj, not_found_obj, delete_success_obj
 
 user_schema = UserGetSchema()
 users_schema = UserGetSchema(many=True)
 
-USER_ALREADY_EXIST = "Girilen mail bilgisi sistemde bulunmaktadır!"
+USER_ALREADY_EXIST = "Email already exist!"
 
 def save_new_user(user_data : UserSchema):
     try:
         user = UsersModel.query.filter_by(email=user_data.email).first()
-        if not user:
+        if user:
+            return {'message':USER_ALREADY_EXIST}, 404
+        else:
+            print("Tamamam mmmmmmmmmmmmmmmm")
             new_user = UsersModel(
                 id = str(uuid.uuid4()),
                 first_name = user_data.first_name,
                 last_name = user_data.last_name,
-                full_name = user_data.first_name + " " + user_data.last_name,
                 username = user_data.username,
                 email = user_data.email,
-                password = user_data.password,
-                email_confirmed = False
+                password_hash = user_data.password
             )
             db.session.add(new_user)
             db.session.commit()
             return user_schema.dump(new_user), 201
-        else:
-            return {'message':USER_ALREADY_EXIST}, 404
     except Exception as error:
         return server_error_obj, 500
 

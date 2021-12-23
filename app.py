@@ -11,7 +11,7 @@ from bcrypt import flask_bcyrpt
 import os
 
 from src.models.users import UsersModel
-from src.controllers.user_controller import UserResource, user_ns
+from src.controllers.user_controller import UserResource, UserListResource, user_ns
 
 app = Flask(__name__)
 api = Api(app, doc='/doc', title='Flask Rest Structure')
@@ -29,6 +29,7 @@ migrate = Migrate(app, db)
 api.add_namespace(user_ns)
 
 user_ns.add_resource(UserResource, '/<id>')
+user_ns.add_resource(UserListResource, '/')
 
 
 @app.before_first_request

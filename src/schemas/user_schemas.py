@@ -5,13 +5,13 @@ from .messages.user import UserMessages
 class UserSchema(Schema):
     id = fields.String(required=False)
     first_name = fields.String(required=True, 
-        validate=validate.Length(1,30,error=UserMessages.FIRST_NAME_LEN_MSG), 
+        validate=validate.Length(2,30,error=UserMessages.FIRST_NAME_LEN_MSG), 
         error_messages={"required":UserMessages.FIRST_NAME_REQ_MSG})
     last_name = fields.String(required=True, 
-        validate=validate.Length(1,30,error=UserMessages.LAST_NAME_LEN_MSG), 
+        validate=validate.Length(2,30,error=UserMessages.LAST_NAME_LEN_MSG), 
         error_messages={"required":UserMessages.LAST_NAME_REQ_MSG})
     username = fields.String(required=True, 
-        validate=validate.Length(1, 35, error=UserMessages.USERNAME_LEN_MSG), 
+        validate=validate.Length(4, 35, error=UserMessages.USERNAME_LEN_MSG), 
         error_messages={"required":UserMessages.USERNAME_REQ_MSG})
     email = fields.String(
         required=True, 
@@ -20,7 +20,7 @@ class UserSchema(Schema):
         error_messages={"required":UserMessages.MAIL_REQ_MSG})
     password = fields.String(required=True, 
         validate=[validate.Length(6, 30, error=UserMessages.PASSWORD_LEN_MSG),
-            validate.Regexp("[A-Za-z0-9@#$%^&+=]{6,30}",error=UserMessages.PASSWORD_FORMAT_MSG)],
+            validate.Regexp("[A-Za-z0-9@#$%^.&+=]{6,30}",error=UserMessages.PASSWORD_FORMAT_MSG)],
         error_messages={"required":UserMessages.PASSWORD_REQ_MSG})
 
 class UserGetSchema(Schema):
