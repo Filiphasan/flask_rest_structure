@@ -1,12 +1,25 @@
-from copy import error
 import uuid
 import datetime
 
 from db import db
+from flask_restx import fields, Namespace
 from src.models.users import UsersModel
-from typing import Dict, Tuple, List
-from schemas.user import UserSchema
-from services import server_error_obj
+from schemas.user import UserSchema, UserGetSchema
+from services import server_error_obj, not_found_obj, delete_success_obj
+
+user_schema = UserGetSchema()
+users_schema = UserGetSchema(many=True)
+
+user_ns = Namespace("user", description= "User operations.")
+user = user_ns.model("User", {
+    'id': fields.String(),
+    'first_name': fields.String(),
+    'last_name': fields.String(),
+    'username': fields.String(),
+    'email': fields.String()
+})
+
+USER_ALREADY_EXIST = "Girilen mail bilgisi sistemde bulunmaktadır!"
 
 def save_new_user(user_data : UserSchema):
     try:
@@ -25,26 +38,45 @@ def save_new_user(user_data : UserSchema):
             )
             db.session.add(new_user)
             db.session.commit()
-            return True
+            return user_schema.dump(new_user), 201
         else:
-            return False
+            return {'message':USER_ALREADY_EXIST}, 404
     except Exception as error:
         return server_error_obj, 500
 
 def get_all_users():
     try:
-        return UsersModel.query.filter_by(is_deleted=False).all()
+        users = UsersModel.query.filter_by(is_deleted=False).all()
+        if users:
+            return users_schema.dump(users)
+        else:
+            return not_found_obj, 404
     except Exception as error:
         return server_error_obj, 500
 
+def get_user_id(id : str):
+    try:
+        user = UsersModel.find_by_id(id)
+        if user:
+            return user_schema.dump(user)
+        else:
+            return not_found_obj, 404
+    except:
+        return server_error_obj, 500
 def get_user(type: str, data):
     try:
         if type=="mail":
-            return UsersModel.query.filter_by(email=data).first()
-        elif type=="username":
-            return UsersModel.query.filter_by(username=data).first()
+            user = UsersModel.query.filter_by(email=data).first()
+            if user:
+                return user_schema.dump(user)
+            else:
+                return not_found_obj, 404
         else:
-            return UsersModel.query.filter_by(id=data).first()
+            user = UsersModel.query.filter_by(username=data).first()
+            if user:
+                return user_schema.dump(user)
+            else:
+                return not_found_obj, 404
     except Exception as error:
         return server_error_obj, 500
 
@@ -58,8 +90,9 @@ def update_user(user_data:UserSchema):
         user.full_name = user_data.first_name + " " + user_data.last_name
         user.username = user_data.username
         user.email = user_data.email
+        user.updated_at = datetime.datetime.utcnow()
         db.session.commit()
-        return True
+        return user_schema.dump(user)
     except Exception as error:
         return server_error_obj, 500
 
@@ -68,9 +101,10 @@ def soft_delete_user(user_id: str):
         user = UsersModel.query.get(user_id)
         if user:
             user.is_deleted = True
+            user.updated_at = datetime.datetime.utcnow()
             db.session.commit()
-            return True
-        return False
+            return delete_success_obj, 200
+        return not_found_obj, 404
     except Exception as error:
         return server_error_obj, 500
 
@@ -80,8 +114,8 @@ def hard_delete_user(user_id: str):
         if user:
             db.session.delete(user)
             db.session.commit()
-            return True
-        return False
+            return delete_success_obj, 200
+        return not_found_obj, 404
     except Exception as error:
         return server_error_obj, 500
 
