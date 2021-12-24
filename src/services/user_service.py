@@ -1,12 +1,14 @@
 import uuid
 import datetime
 import hashlib
+import jwt
 
 from src.models.users import UsersModel
 from src.schemas.user_schemas import UserGetSchema
 from src.services import server_error_obj, not_found_obj, delete_success_obj, email_already_exist_obj
 
 from db import db
+from app import app
 
 user_schema = UserGetSchema()
 users_schema = UserGetSchema(many=True)
@@ -109,7 +111,9 @@ def hard_delete_user(user_id: str):
         return server_error_obj, 500
 
 def create_token(user: UsersModel):
-    try:
-        pass
-    except Exception as error:
-        return server_error_obj, 500
+    token = jwt.encode({
+        'sub': user.email,
+        'exp':  datetime.utcnow()+datetime.timedelta(minutes=10),
+        'iat': datetime.utcnow()
+    },app.secret_key, algorithm='HS256')
+    return token

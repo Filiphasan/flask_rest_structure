@@ -20,7 +20,7 @@ load_dotenv(".env")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI", 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["PROPAGATE_EXCEPTIONS"] = True
-app.secret_key = 'secret_key'
+app.secret_key = 'application_secret_key' #Example: c094b11d-8eb1-450b-949a-f83d9564c923
 db.init_app(app)
 ma.init_app(app)
 migrate = Migrate(app, db)
@@ -30,10 +30,10 @@ api.add_namespace(user_ns)
 user_ns.add_resource(UserResource, '/<id>')
 user_ns.add_resource(UserListResource, '/')
 
-
-@app.before_first_request
-def create_table():
-    db.create_all()
+# If you use flask migrate with alembic, don't need this method.
+# @app.before_first_request
+# def create_table():
+#     db.create_all()
 
 @app.errorhandler(ValidationError)
 def handle_validation_error(error):
