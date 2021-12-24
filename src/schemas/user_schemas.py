@@ -1,5 +1,4 @@
 from marshmallow import Schema, fields, validate
-from ma import ma
 from .messages.user import UserMessages
 
 class UserSchema(Schema):
@@ -29,5 +28,6 @@ class UserGetSchema(Schema):
     last_name = fields.String()
     username = fields.String()
     email = fields.String()
+    email_confirmed = fields.Boolean()
     
 

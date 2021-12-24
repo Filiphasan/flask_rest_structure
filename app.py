@@ -10,6 +10,7 @@ from ma import ma
 import os
 
 from src.controllers.user_controller import UserResource, UserListResource, user_ns
+from src.controllers.auth_controller import AuthResource, auth_ns
 
 app = Flask(__name__)
 api = Api(app, doc='/doc', title='Flask Rest Structure')
@@ -24,9 +25,11 @@ ma.init_app(app)
 migrate = Migrate(app, db)
 
 api.add_namespace(user_ns)
+api.add_namespace(auth_ns)
 
 user_ns.add_resource(UserResource, '/<id>')
 user_ns.add_resource(UserListResource, '/')
+auth_ns.add_resource(AuthResource, '/')
 
 # If you use flask migrate with alembic, don't need this method.
 # @app.before_first_request
@@ -40,10 +43,7 @@ def handle_validation_error(error):
 @app.errorhandler(Exception)
 def handler_global_error(error):
     code = 500
-    if isinstance(error, HTTPException):
-        code = error.code
-        return jsonify({"error":str(error)}), code
-    return jsonify({"error":"Internal Server Error!"}), code
+    return jsonify({"error":str(error)}), code
     
 
 @app.route("/")

@@ -3,7 +3,7 @@ from flask import request
 from src.schemas.user_schemas import UserSchema
 from src.services.user_service import save_new_user, get_all_users, get_user_id, get_user, update_user, soft_delete_user, hard_delete_user
 
-user_ns = Namespace("user", description= "User operations.")
+user_ns = Namespace("api/user", description= "User operations.")
 user = user_ns.model("User", {
     'id': fields.String(),
     'first_name': fields.String(),
@@ -36,9 +36,9 @@ user_ns.param('id','User identity UUID')
 class UserResource(Resource):
     @user_ns.doc('Get A User')
     @user_ns.response(200,"Get Success",model= user)
-    @user_ns.marshal_with(user)
     def get(self, id):
-        get_user_id(id)
+        result = get_user_id(id)
+        return result
     
     @user_ns.doc("Update A User")
     @user_ns.response(200,"Update Success.",model= user)
@@ -52,8 +52,9 @@ class UserResource(Resource):
 user_ns.route("/")
 class UserListResource(Resource):
     @user_ns.doc("Get User List")
+    @user_ns.response(200,"Get Success",model= [user])
     def get(self):
-        result = get_all_users()
+        result = get_all_users(email_confirmed=False)
         return result
     
     @user_ns.doc("Create A User")

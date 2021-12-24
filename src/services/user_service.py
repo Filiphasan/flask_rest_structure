@@ -1,8 +1,6 @@
 import uuid
 import datetime
 import hashlib
-import jwt
-import os
 
 from src.models.users import UsersModel
 from src.schemas.user_schemas import UserGetSchema
@@ -12,8 +10,6 @@ from db import db
 
 user_schema = UserGetSchema()
 users_schema = UserGetSchema(many=True)
-
-secret_key = os.environ.get("SECRET_KEY")
 
 
 def save_new_user(user_data):
@@ -34,27 +30,27 @@ def save_new_user(user_data):
             db.session.add(new_user)
             db.session.commit()
             return user_schema.dump(new_user), 201
-    except Exception as error:
+    except:
         return server_error_obj, 500
 
-def get_all_users():
+def get_all_users(is_deleted=False, email_confirmed=True):
     try:
-        users = UsersModel.query.filter_by(is_deleted=False).all()
+        users = UsersModel.query.filter_by(is_deleted=is_deleted, email_confirmed=email_confirmed).all()
         if users:
-            return users_schema.dump(users)
+            return users_schema.dump(users), 200
         else:
             return not_found_obj, 404
-    except Exception as error:
+    except:
         return server_error_obj, 500
 
 def get_user_id(user_id : str):
     try:
-        user = UsersModel.find_by_id(user_id)
+        user = UsersModel.query.get(user_id)
         if user:
             return user_schema.dump(user)
         else:
             return not_found_obj, 404
-    except:
+    except Exception as err:
         return server_error_obj, 500
 def get_user(type: str, data: str):
     try:
@@ -70,12 +66,12 @@ def get_user(type: str, data: str):
                 return user_schema.dump(user)
             else:
                 return not_found_obj, 404
-    except Exception as error:
+    except:
         return server_error_obj, 500
 
 def update_user(user_data, id: str):
     try:
-        user = UsersModel.find_by_id(id)
+        user = UsersModel.query.get(id)
         if not user:
             return False
         user.first_name = user_data["first_name"]
@@ -98,7 +94,7 @@ def soft_delete_user(user_id: str):
             db.session.commit()
             return delete_success_obj, 200
         return not_found_obj, 404
-    except Exception as error:
+    except:
         return server_error_obj, 500
 
 def hard_delete_user(user_id: str):
@@ -109,13 +105,5 @@ def hard_delete_user(user_id: str):
             db.session.commit()
             return delete_success_obj, 200
         return not_found_obj, 404
-    except Exception as error:
+    except:
         return server_error_obj, 500
-
-def create_token(user: UsersModel):
-    token = jwt.encode({
-        'sub': user.email,
-        'exp':  datetime.utcnow()+datetime.timedelta(minutes=10),
-        'iat': datetime.utcnow()
-    },secret_key, algorithm='HS256')
-    return token
