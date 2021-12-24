@@ -18,6 +18,7 @@ If you have pip and you want install virtualenv. Just open terminal and work thi
 - Work this code `git clone https://github.com/Filiphasan/flask_rest_structure.git`
 - This code clone this structure into your local machine.
 - Open this project with VS Code or reletad Editör.
+- Create `.env` file in current directory. Fill the `.env` file looking at the `.env.example` file.
 - Open terminal and work `virtualenv env`.
 - If succesfully created env folder, work this code for Windows `.\env\Scripts\activate` and for Linux `source venv/bin/activate` on terminal for activate virtual environment.
 - You create a virtual environment for your project.
