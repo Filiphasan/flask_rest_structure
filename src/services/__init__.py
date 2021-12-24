@@ -10,3 +10,7 @@ delete_success_obj = {
     'status':'success',
     'message':'Deletion Successful.'
 }
+email_already_exist_obj = {
+    'status':'error',
+    'message':'Email already exist!'
+}

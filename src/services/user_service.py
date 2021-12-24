@@ -2,24 +2,21 @@ import uuid
 import datetime
 import hashlib
 
-
 from src.models.users import UsersModel
-from src.schemas.user_schemas import UserSchema, UserGetSchema
-from src.services import server_error_obj, not_found_obj, delete_success_obj
+from src.schemas.user_schemas import UserGetSchema
+from src.services import server_error_obj, not_found_obj, delete_success_obj, email_already_exist_obj
 
 from db import db
-from bcrypt import flask_bcyrpt
 
 user_schema = UserGetSchema()
 users_schema = UserGetSchema(many=True)
 
-USER_ALREADY_EXIST = "Email already exist!"
 
 def save_new_user(user_data):
     try:
         user = UsersModel.query.filter_by(email=user_data['email']).first()
         if user:
-            return {'message':USER_ALREADY_EXIST}, 404
+            return email_already_exist_obj, 400
         else:
             password = user_data['password']
             new_user = UsersModel(

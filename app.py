@@ -23,7 +23,6 @@ app.config["PROPAGATE_EXCEPTIONS"] = True
 app.secret_key = 'secret_key'
 db.init_app(app)
 ma.init_app(app)
-flask_bcyrpt.init_app(app)
 migrate = Migrate(app, db)
 
 api.add_namespace(user_ns)
