@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, jsonify
+from flask import Flask, jsonify
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from marshmallow import ValidationError
@@ -7,10 +7,8 @@ from flask_restx import Api
 
 from db import db
 from ma import ma
-from bcrypt import flask_bcyrpt
 import os
 
-from src.models.users import UsersModel
 from src.controllers.user_controller import UserResource, UserListResource, user_ns
 
 app = Flask(__name__)
@@ -20,7 +18,7 @@ load_dotenv(".env")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI", 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["PROPAGATE_EXCEPTIONS"] = True
-app.secret_key = 'application_secret_key' #Example: c094b11d-8eb1-450b-949a-f83d9564c923
+app.secret_key = os.environ.get("SECRET_KEY", 'application_secret_key') #Example: c094b11d-8eb1-450b-949a-f83d9564c923
 db.init_app(app)
 ma.init_app(app)
 migrate = Migrate(app, db)

@@ -1,7 +1,5 @@
 from datetime import datetime
 from db import db
-# from ...bcrypt import flask_bcyrpt
-from bcrypt import flask_bcyrpt
 from .base import BaseModel
 
 

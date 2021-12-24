@@ -20,7 +20,7 @@ class UserSchema(Schema):
         error_messages={"required":UserMessages.MAIL_REQ_MSG})
     password = fields.String(required=True, 
         validate=[validate.Length(6, 30, error=UserMessages.PASSWORD_LEN_MSG),
-            validate.Regexp("[A-Za-z0-9@#$%^.&+=]{6,30}",error=UserMessages.PASSWORD_FORMAT_MSG)],
+            validate.Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]",error=UserMessages.PASSWORD_FORMAT_MSG)],
         error_messages={"required":UserMessages.PASSWORD_REQ_MSG})
 
 class UserGetSchema(Schema):

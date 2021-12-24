@@ -46,13 +46,15 @@ class UserResource(Resource):
     def put(self, id):
         req_json = request.get_json()
         data = user_add_or_update_schema.load(req_json)
-        update_user(data, id)
+        result = update_user(data, id)
+        return result
 
 user_ns.route("/")
 class UserListResource(Resource):
     @user_ns.doc("Get User List")
     def get(self):
-        get_all_users()
+        result = get_all_users()
+        return result
     
     @user_ns.doc("Create A User")
     @user_ns.response(201,"Add Success.",model= user)
