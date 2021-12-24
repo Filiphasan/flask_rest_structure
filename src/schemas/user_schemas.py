@@ -24,11 +24,10 @@ class UserSchema(Schema):
         error_messages={"required":UserMessages.PASSWORD_REQ_MSG})
 
 class UserGetSchema(Schema):
-    class Meta:
-        id = fields.String()
-        first_name = fields.String()
-        last_name = fields.String()
-        username = fields.String()
-        email = fields.String()
-        password = fields.String()
+    id = fields.String()
+    first_name = fields.String()
+    last_name = fields.String()
+    username = fields.String()
+    email = fields.String()
+    
 
