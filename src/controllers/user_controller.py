@@ -2,6 +2,7 @@ from flask_restx import Resource, fields, Namespace
 from flask import request
 from src.schemas.user_schemas import UserSchema
 from src.services.user_service import save_new_user, get_all_users, get_user_id, get_user, update_user, soft_delete_user, hard_delete_user
+from src.utils.decorator import token_required
 
 user_ns = Namespace("api/user", description= "User operations.")
 user = user_ns.model("User", {
@@ -31,11 +32,13 @@ user_add= user_ns.model("UserCreate", {
 
 user_add_or_update_schema = UserSchema()
 
-user_ns.route("/<id>")
-user_ns.param('id','User identity UUID')
+
+@user_ns.route("/<id>")
+@user_ns.param('id','User identity UUID')
 class UserResource(Resource):
     @user_ns.doc('Get A User')
     @user_ns.response(200,"Get Success",model= user)
+    @token_required
     def get(self, id):
         result = get_user_id(id)
         return result
@@ -49,7 +52,7 @@ class UserResource(Resource):
         result = update_user(data, id)
         return result
 
-user_ns.route("/")
+@user_ns.route("/")
 class UserListResource(Resource):
     @user_ns.doc("Get User List")
     @user_ns.response(200,"Get Success",model= [user])

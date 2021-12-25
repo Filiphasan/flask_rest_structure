@@ -2,6 +2,7 @@ from flask_restx import Resource, fields, Namespace
 from flask import request
 from src.schemas.auth_schema import AuthSchema
 from src.services.auth_service import login
+from src.utils.decorator import token_required
 
 auth_schema = AuthSchema()
 

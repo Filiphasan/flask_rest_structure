@@ -24,31 +24,32 @@ db.init_app(app)
 ma.init_app(app)
 migrate = Migrate(app, db)
 
+# Implement Namespace In Api right below
 api.add_namespace(user_ns)
 api.add_namespace(auth_ns)
 
+#Implement Resource In NameSpace right below
 user_ns.add_resource(UserResource, '/<id>')
 user_ns.add_resource(UserListResource, '/')
 auth_ns.add_resource(AuthResource, '/')
 
-# If you use flask migrate with alembic, don't need this method.
+# If you use flask migrate with alembic, don't need this method. We create table with flask-migrate
 # @app.before_first_request
 # def create_table():
 #     db.create_all()
 
+# If Marshmallow load data not successful, Marshmallow return ValidationError and error descriptions.
 @app.errorhandler(ValidationError)
 def handle_validation_error(error):
     return jsonify(error.messages), 400
 
+# Global Error Handling
 @app.errorhandler(Exception)
 def handler_global_error(error):
     code = 500
+    if isinstance(error, HTTPException):
+        code = error.code
     return jsonify({"error":str(error)}), code
-    
-
-@app.route("/")
-def hello():
-    return "hello"
 
 
 if __name__ == "__main__":
