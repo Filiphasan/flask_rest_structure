@@ -6,6 +6,7 @@
 
 ### If you want to use this structure. Pay attention to the items below!
 
+- You need Git VCS [Download](https://git-scm.com/downloads)
 - You need Python3.0 or newer version.[Download](https://www.python.org/downloads/)
 - You need pip package manager for python. If you have python, you already have pip.
 - Absolutely you need virtualenv. [Virtual Env Doc](https://virtualenv.pypa.io/en/latest/)
