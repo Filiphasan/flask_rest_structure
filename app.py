@@ -9,11 +9,13 @@ from db import db
 from ma import ma
 import os
 
+from src.utils.data_seed import seed_data
 from src.controllers.user_controller import UserResource, UserListResource, user_ns
 from src.controllers.auth_controller import AuthResource, auth_ns
 
 app = Flask(__name__)
 api = Api(app, doc='/doc', title='Flask Rest Structure')
+
 
 load_dotenv(".env")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI", 'sqlite:///data.db')
@@ -33,10 +35,12 @@ user_ns.add_resource(UserResource, '/<id>')
 user_ns.add_resource(UserListResource, '/')
 auth_ns.add_resource(AuthResource, '/')
 
-# If you use flask migrate with alembic, don't need this method. We create table with flask-migrate
-# @app.before_first_request
-# def create_table():
-#     db.create_all()
+
+@app.before_first_request
+def create_table():
+    # If you use flask migrate with alembic, don't need this method. We create table with flask-migrate
+    # db.create_all()
+    seed_data()
 
 # If Marshmallow load data not successful, Marshmallow return ValidationError and error descriptions.
 @app.errorhandler(ValidationError)

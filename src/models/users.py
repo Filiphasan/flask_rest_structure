@@ -3,7 +3,7 @@ from db import db
 from .base import BaseModel
 
 
-class UsersModel(BaseModel, db.Model):
+class UsersModel(db.Model, BaseModel):
     __tablename__ = "users"
 
     # id = db.Column(db.Integer, primary_key=True, autoincrement=True)

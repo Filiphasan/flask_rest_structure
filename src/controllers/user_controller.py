@@ -38,7 +38,6 @@ user_add_or_update_schema = UserSchema()
 class UserResource(Resource):
     @user_ns.doc('Get A User')
     @user_ns.response(200,"Get Success",model= user)
-    @token_required
     def get(self, id):
         result = get_user_id(id)
         return result
