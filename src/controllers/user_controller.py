@@ -50,6 +50,11 @@ class UserResource(Resource):
         data = user_add_or_update_schema.load(req_json)
         result = update_user(data, id)
         return result
+    
+    @user_ns.doc("Delete A User")
+    def delete(self, id):
+        result = soft_delete_user(id)
+        return result
 
 @user_ns.route("/")
 class UserListResource(Resource):
