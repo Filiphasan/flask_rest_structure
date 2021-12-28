@@ -24,3 +24,9 @@ If you have pip and you want install virtualenv. Just open terminal and work thi
 - If succesfully created env folder, work this code for Windows `.\env\Scripts\activate` and for Linux `source env/bin/activate` on terminal for activate virtual environment.
 - You create a virtual environment for your project.
 - Work this code and install all dependencies `pip install -r requirements.txt`.
+
+### How To Use Flask Migrate
+- Change entity model class or create a new entity class
+- Run this code `flask db migrate -m "Migration Name"`
+- This code create new python file in migrations/versions folder.
+- Run this code `flask db upgrade` and your db is update.
