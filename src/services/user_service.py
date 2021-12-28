@@ -102,7 +102,7 @@ def edit_user_password(id: str, data):
             return password_change_success_obj, 200
         return not_found_obj, 404
     except Exception as error:
-        return str(error), 500
+        return server_error_obj, 500
 
 def soft_delete_user(user_id: str):
     try:
