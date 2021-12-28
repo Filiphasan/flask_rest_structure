@@ -25,5 +25,4 @@ class AuthResource(Resource):
     def post(self):
         req_json = request.get_json()
         data = auth_schema.load(req_json)
-        result = login(data=data)
-        return result
+        return login(data=data)

@@ -39,8 +39,7 @@ class UserResource(Resource):
     @user_ns.doc('Get A User')
     @user_ns.response(200,"Get Success",model= user)
     def get(self, id):
-        result = get_user_id(id)
-        return result
+        return get_user_id(id)
     
     @user_ns.doc("Update A User")
     @user_ns.response(200,"Update Success.",model= user)
@@ -48,21 +47,18 @@ class UserResource(Resource):
     def put(self, id):
         req_json = request.get_json()
         data = user_add_or_update_schema.load(req_json)
-        result = update_user(data, id)
-        return result
+        return update_user(data, id)
     
     @user_ns.doc("Delete A User")
     def delete(self, id):
-        result = soft_delete_user(id)
-        return result
+        return soft_delete_user(id)
 
 @user_ns.route("/")
 class UserListResource(Resource):
     @user_ns.doc("Get User List")
     @user_ns.response(200,"Get Success",model= [user])
     def get(self):
-        result = get_all_users(email_confirmed=False)
-        return result
+        return get_all_users(email_confirmed=False)
     
     @user_ns.doc("Create A User")
     @user_ns.response(201,"Add Success.",model= user)
@@ -70,7 +66,6 @@ class UserListResource(Resource):
     def post(self):
         req_json = request.get_json()
         data = user_add_or_update_schema.load(req_json)
-        result = save_new_user(data)
-        return result
+        return save_new_user(data)
 
     
