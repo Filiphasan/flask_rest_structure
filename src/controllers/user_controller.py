@@ -44,6 +44,7 @@ user_pw_schema = UserPwSchema()
 class UserResource(Resource):
     @user_ns.doc('Get A User')
     @user_ns.response(200,"Get Success",model= user)
+    @token_required
     def get(self, id):
         return get_user_id(id)
 

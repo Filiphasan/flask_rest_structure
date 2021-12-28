@@ -4,5 +4,5 @@ token_not_found_obj = {
 }
 invalid_token_obj ={
     'status': 'error',
-    'message': 'Geçersiz token'
+    'message': 'Invalid Token!'
 }
