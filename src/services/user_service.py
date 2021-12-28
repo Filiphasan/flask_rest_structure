@@ -1,10 +1,11 @@
+from os import error
 import uuid
 import datetime
 import hashlib
 
 from src.models.users import UsersModel
 from src.schemas.user_schemas import UserGetSchema
-from src.services import server_error_obj, not_found_obj, delete_success_obj, email_already_exist_obj
+from src.services import server_error_obj, not_found_obj, delete_success_obj, email_already_exist_obj, password_wrong_obj, password_change_success_obj
 
 from db import db
 
@@ -84,6 +85,24 @@ def update_user(user_data, id: str):
         return user_schema.dump(user)
     except Exception as error:
         return server_error_obj, 500
+
+def edit_user_password(id: str, data):
+    try:
+        new_password = data["new_password"]
+        old_password = data["old_password"]
+        user = UsersModel.query.get(id)
+        old_pw_hash = hashlib.md5(old_password.encode()).hexdigest()
+        if user:
+            if user.password != old_pw_hash:
+                return password_wrong_obj, 400
+            new_pw_hash = hashlib.md5(new_password.encode()).hexdigest()
+            user.password = new_pw_hash
+            user.updated_at = datetime.datetime.utcnow()
+            db.session.commit()
+            return password_change_success_obj, 200
+        return not_found_obj, 404
+    except Exception as error:
+        return str(error), 500
 
 def soft_delete_user(user_id: str):
     try:

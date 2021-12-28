@@ -22,3 +22,7 @@ password_wrong_obj = {
     'status':'error',
     'message':'Email or Password is wrong!'
 }
+password_change_success_obj = {
+    'status':'success',
+    'message':'Successfully edit password.'
+}

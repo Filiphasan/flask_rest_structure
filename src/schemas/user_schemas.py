@@ -22,6 +22,13 @@ class UserSchema(Schema):
             validate.Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]",error=UserMessages.PASSWORD_FORMAT_MSG)],
         error_messages={"required":UserMessages.PASSWORD_REQ_MSG})
 
+class UserPwSchema(Schema):
+    old_password = fields.String(required=True, error_messages={"required":"Old Password field is required!"})
+    new_password = fields.String(required=True, 
+        validate=[validate.Length(6, 30, error=UserMessages.PASSWORD_LEN_MSG),
+            validate.Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]",error=UserMessages.PASSWORD_FORMAT_MSG)],
+        error_messages={"required":UserMessages.PASSWORD_REQ_MSG})
+
 class UserGetSchema(Schema):
     id = fields.String()
     first_name = fields.String()

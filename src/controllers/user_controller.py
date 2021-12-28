@@ -1,7 +1,7 @@
 from flask_restx import Resource, fields, Namespace
 from flask import request
-from src.schemas.user_schemas import UserSchema
-from src.services.user_service import save_new_user, get_all_users, get_user_id, get_user, update_user, soft_delete_user, hard_delete_user
+from src.schemas.user_schemas import UserSchema, UserPwSchema
+from src.services.user_service import save_new_user, get_all_users, get_user_id, update_user, soft_delete_user, edit_user_password
 from src.utils.decorator import token_required
 
 user_ns = Namespace("api/user", description= "User operations.")
@@ -30,7 +30,13 @@ user_add= user_ns.model("UserCreate", {
     'password': fields.String()
 })
 
+user_edit_pw = user_ns.model("UserEditPassword", {
+    'old_password': fields.String(),
+    'new_password': fields.String()
+})
+
 user_add_or_update_schema = UserSchema()
+user_pw_schema = UserPwSchema()
 
 
 @user_ns.route("/<id>")
@@ -40,6 +46,13 @@ class UserResource(Resource):
     @user_ns.response(200,"Get Success",model= user)
     def get(self, id):
         return get_user_id(id)
+
+    @user_ns.doc('Edit User Password')
+    @user_ns.expect(user_edit_pw)
+    def patch(self, id):
+        req_json = request.get_json()
+        data = user_pw_schema.load(req_json)
+        return edit_user_password(id, data)
     
     @user_ns.doc("Update A User")
     @user_ns.response(200,"Update Success.",model= user)
