@@ -35,8 +35,8 @@ def login(data):
 def create_token(user: UsersModel, role: str):
     token = jwt.encode({
         'sub': user.id,
-        'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=120),
-        'iat': datetime.datetime.utcnow(),
+        'exp': datetime.datetime.now()+datetime.timedelta(minutes=120),
+        'iat': datetime.datetime.now(),
         'roles': [role]
     },secret_key, algorithm='HS256')
     return token
