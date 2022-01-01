@@ -32,9 +32,6 @@ db.init_app(app)
 ma.init_app(app)
 migrate = Migrate(app, db)
 
-
-
-
 # Implement Namespace In Api right below
 api.add_namespace(user_ns)
 api.add_namespace(auth_ns)
@@ -43,7 +40,6 @@ api.add_namespace(auth_ns)
 user_ns.add_resource(UserResource, '/<id>')
 user_ns.add_resource(UserListResource, '/')
 auth_ns.add_resource(AuthResource, '/')
-
 
 @app.before_first_request
 def create_table():
@@ -62,8 +58,7 @@ def handler_global_error(error):
     code = 500
     if isinstance(error, HTTPException):
         code = error.code
-    return jsonify({"error":str(error)}), code
-
+    return jsonify({"status":"error","message":str(error)}), code
 
 if __name__ == "__main__":
     # db.init_app(app)
