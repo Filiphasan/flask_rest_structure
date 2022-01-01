@@ -14,8 +14,12 @@ from src.controllers.user_controller import UserResource, UserListResource, user
 from src.controllers.auth_controller import AuthResource, auth_ns
 
 app = Flask(__name__)
-api = Api(app, doc='/doc', title='Flask Rest Structure')
 
+@app.route("/")
+def server():
+    return "Server is Working!"
+
+api = Api(app, doc='/doc', title='Flask Rest Structure')
 
 load_dotenv(".env")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI", 'sqlite:///data.db')
@@ -25,6 +29,8 @@ app.secret_key = os.environ.get("SECRET_KEY", 'application_secret_key') #Example
 db.init_app(app)
 ma.init_app(app)
 migrate = Migrate(app, db)
+
+
 
 # Implement Namespace In Api right below
 api.add_namespace(user_ns)
@@ -38,7 +44,7 @@ auth_ns.add_resource(AuthResource, '/')
 
 @app.before_first_request
 def create_table():
-    # If you use flask migrate with alembic, don't need this method. We create table with flask-migrate
+    # If you use flask migrate with alembic, don't need this method. We create and edit table with flask-migrate.
     # db.create_all()
     seed_data()
 
