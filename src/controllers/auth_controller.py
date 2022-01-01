@@ -2,11 +2,10 @@ from flask_restx import Resource, fields, Namespace
 from flask import request
 from src.schemas.auth_schema import AuthSchema
 from src.services.auth_service import login
-from src.utils.decorator import token_required
 
 auth_schema = AuthSchema()
 
-auth_ns = Namespace("api/auth", description="Auth Operation")
+auth_ns = Namespace("auth", description="Auth Operation")
 
 login_model = auth_ns.model("Login", {
     "email" : fields.String(),

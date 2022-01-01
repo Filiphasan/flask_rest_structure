@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Blueprint
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 from marshmallow import ValidationError
@@ -19,7 +19,9 @@ app = Flask(__name__)
 def server():
     return "Server is Working!"
 
-api = Api(app, doc='/doc', title='Flask Rest Structure')
+blueprint = Blueprint("api", __name__, url_prefix="/api")
+api = Api(blueprint, doc='/doc', title='Flask Rest Structure')
+app.register_blueprint(blueprint)
 
 load_dotenv(".env")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI", 'sqlite:///data.db')
@@ -29,6 +31,7 @@ app.secret_key = os.environ.get("SECRET_KEY", 'application_secret_key') #Example
 db.init_app(app)
 ma.init_app(app)
 migrate = Migrate(app, db)
+
 
 
 

@@ -4,7 +4,7 @@ from src.schemas.user_schemas import UserSchema, UserPwSchema
 from src.services.user_service import save_new_user, get_all_users, get_user_id, update_user, soft_delete_user, edit_user_password
 from src.utils.decorator import token_required
 
-user_ns = Namespace("api/user", description= "User operations.")
+user_ns = Namespace("user", description= "User operations.")
 user = user_ns.model("User", {
     'id': fields.String(),
     'first_name': fields.String(),
